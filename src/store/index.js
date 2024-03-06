@@ -58,7 +58,7 @@ export const useDataStore = defineStore('data', {
       {id: 3, label: 'Средняя категория (10-13 лет)', value: '10-13'},
       {id: 4, label: 'Старшая категория (14-17 лет)', value: '14-17'},
     ],
-    selectedCountry: null,
+
     individualUsers: [
       {id: 1, type: 'text',placeholder: 'Ф.И.О', value: ''},
       {id: 3, type: 'text',placeholder: 'Email / Номер телефона', value: ''},
@@ -71,7 +71,7 @@ export const useDataStore = defineStore('data', {
       {id: 2, placeholder: 'Номер наставника +7-123-456-7890', value: ''},
     ],
     teamUsers: [
-      {id: 1, user: 'Участник #1'},
+      {id: 1, user: 'Участник'},
     ],
     inputValue: {
       name: '',
@@ -87,11 +87,14 @@ export const useDataStore = defineStore('data', {
     isTeamUsersShown: false,
     inputErrored: false,
     isOptionDisabled: true,
-    getAgeOptionValue: '',
+    getAgeOptionValue: null,
+    selectedSportOption: null,
+    selectedCountry: null,
   }),
   actions: {
     getCountries(value){
       console.log(value.value);
+      this.selectedCountry = value.value
     },
     chooseAgeCategory(optionValue) {
       this.isOptionDisabled = false;
@@ -137,8 +140,8 @@ export const useDataStore = defineStore('data', {
       }
       this.isDeleteButtonShown = true;
       this.teamUsers.push({
-        id: this.teamUsers.length + 1,
-        user: `Участник #${this.teamUsers.length + 1}`,
+        id: Date.now(),
+        user: `Участник`,
         isDeleteButtonShown: true,
       });
       console.log('clicked');
@@ -162,17 +165,29 @@ export const useDataStore = defineStore('data', {
       switch (this.getAgeOptionValue) {
         case '5-6':
           return this.youngerUsersOptions;
-        case '7-9': // Add more cases for other age categories
+        case '7-9':
           return this.youngUsersOptions;
-        case '10-13': // Add more cases for other age categories
+        case '10-13':
           return this.middleUsersOptions;
-        case '14-17': // Add more cases for other age categories
+        case '14-17':
           return this.middleUsersOptions;
         default:
-          return []; // Default empty array if no matching category
+          return [];
       }
     },
-
-
+    filteredTeamUsersOptionValue() {
+      switch (this.getAgeOptionValue) {
+        case '5-6':
+          return this.youngerUsersOptions;
+        case '7-9':
+          return this.youngUsersOptions;
+        case '10-13':
+          return this.middleUsersOptions;
+        case '14-17':
+          return this.middleUsersOptions;
+        default:
+          return [];
+      }
+    },
   },
 })

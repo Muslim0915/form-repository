@@ -5,7 +5,7 @@ export const FORM_ITEM_INJECTION_KEY = Symbol();
 <script setup>
 import { provide } from "vue";
 import { useId } from "radix-vue";
-import { cn } from "src/lib/utils";
+import { cn } from "@/lib/utils";
 
 const props = defineProps({
   class: { type: null, required: false },

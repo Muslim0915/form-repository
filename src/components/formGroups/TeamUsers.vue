@@ -5,6 +5,7 @@ import {useDataStore} from "@/store";
 const store = useDataStore();
 import TeamUser from "@/components/formGroups/TeamUser.vue";
 import AppSubmit from "@/components/ui/AppSubmit.vue";
+import MentorInputs from "@/components/formGroups/MentorInputs.vue";
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import AppSubmit from "@/components/ui/AppSubmit.vue";
               :userTitle="user.user"
               @deleteTeamUser="store.deleteTeamUser(user)"
     />
+    <MentorInputs />
     <AppSubmit />
   </div>
 </template>

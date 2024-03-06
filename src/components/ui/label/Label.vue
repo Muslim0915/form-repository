@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { Label } from "radix-vue";
-import { cn } from "src/lib/utils";
+import { cn } from "@/lib/utils";
 
 const props = defineProps({
   for: { type: String, required: false },
