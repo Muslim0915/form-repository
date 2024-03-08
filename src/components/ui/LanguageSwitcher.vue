@@ -15,7 +15,6 @@ const selectedLanguage = ref(locale.value);
 
 const changeLanguage = () => {
   locale.value = selectedLanguage.value;
-  console.log(selectedLanguage.value);
 };
 </script>
 <template>

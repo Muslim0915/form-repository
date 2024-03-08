@@ -1,13 +1,13 @@
 <script setup>
 import AppForm from "@/components/AppForm.vue";
-
 </script>
 <template>
   <v-app class="app bg-gray-800">
-    <v-container fluid class="h-100 flex-column flex justify-center align-center">
-
+    <v-container
+      fluid
+      class="h-full flex-column flex justify-center align-center"
+    >
       <AppForm />
-
     </v-container>
   </v-app>
 </template>
