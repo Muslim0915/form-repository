@@ -2,14 +2,17 @@
 
 import AppInput from "@/components/ui/AppInput.vue";
 import {useDataStore} from "@/store";
+import {useI18n} from "vue-i18n";
 const store = useDataStore();
+
+const {t} = useI18n()
 </script>
 
 <template>
   <AppInput
     v-for="input in store.mentorInputs"
     :key="input.id"
-    :placeholder="input.placeholder"
+    :placeholder="t(input.placeholder)"
   />
 </template>
 

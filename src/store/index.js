@@ -1,15 +1,40 @@
 import {defineStore} from "pinia";
 import {useToast} from "vue-toastification";
 
-const toast = useToast()
+const toast = useToast();
+
 export const useDataStore = defineStore('data', {
   state: () => ({
     countriesOption: [
-      {id: 1, label: 'Россия', value: 'RU'},
-      {id: 2, label: 'Белоруссия', value: 'BY'},
-      {id: 3, label: 'Казахстан', value: 'KZ'},
-      {id: 4, label: 'Узбекистан', value: 'UZ'},
+      {id: 1, label: 'Россия', value: 'ru'},
+      {id: 2, label: 'Белоруссия', value: 'by'},
+      {id: 3, label: 'Казахстан', value: 'kz'},
+      {id: 4, label: 'Узбекистан', value: 'uz'},
       {id: 5, label: 'Другое', value: 'ETC'},
+    ],
+    languagesOption: [
+      {id: 1, label: 'Русский', value: 'ru'},
+      {id: 2, label: 'Белорусский', value: 'by'},
+      {id: 3, label: 'Казахский', value: 'kz'},
+      {id: 4, label: 'Узбекский', value: 'uz'},
+    ],
+    participationOption:[
+      {id: 1, label: 'Индивидуальное участие', value: 'solo'},
+      {id: 2, label: 'Командная участие', value: 'team'},
+      {id: 3, label: 'Я наставник', value: 'mentor'},
+      {id: 4, label: 'Категория ОВЗ', value: 'OVZ'},
+    ],
+    participationOVZOption:[
+      {
+        id: 1,
+        label: 'Индивидуальное участие',
+        value: 'solo',
+      },
+      {
+        id: 2,
+        label: 'Командная участие',
+        value: 'team',
+      }
     ],
     youngerUsersOptions: [
       {id: 1, label: 'Творческая категория', value: 'Творческая категория'},
@@ -82,7 +107,6 @@ export const useDataStore = defineStore('data', {
       files: null,
     },
     isMainFormGroupShown: true,
-    isAdditionalFormGroupShown: false,
     isIndividualUsersShown: false,
     isTeamUsersShown: false,
     inputErrored: false,
@@ -90,6 +114,10 @@ export const useDataStore = defineStore('data', {
     getAgeOptionValue: null,
     selectedSportOption: null,
     selectedCountry: null,
+    selectedParticipation: null,
+    selectedParticipationOVZ: null,
+    isMentorFormGroupShown: false,
+    isParticipationOVZOptionShown: false,
   }),
   actions: {
     getCountries(value){
@@ -106,20 +134,51 @@ export const useDataStore = defineStore('data', {
       console.log(optionValue.value);
       console.log(this.getAgeOptionValue);
     },
+    chooseParticipation(optionValue){
+      console.log(optionValue.value);
+      console.log(this.selectedParticipation);
+      if(this.selectedParticipation === 'OVZ') {
+        this.isParticipationOVZOptionShown = true
+      }
+      else{
+        this.isParticipationOVZOptionShown = false
+      }
+    },
+    chooseParticipationOVZ(optionValue){
+      console.log(optionValue.value);
+      console.log(this.selectedParticipationOVZ);
+    },
     hideMainFormGroup() {
       this.isMainFormGroupShown = false;
-      this.isAdditionalFormGroupShown = true
+      if(this.selectedParticipation === 'solo') {
+        this.showIndividualUsers()
+      }
+      if (this.selectedParticipation === 'team') {
+        this.showTeamUsers()
+      }
+      if (this.selectedParticipation === 'mentor') {
+        this.isMentorFormGroupShown = true
+        this.isIndividualUsersShown = false
+        this.isTeamUsersShown = false
+      }
+      if (this.selectedParticipation === 'OVZ') {
+        if(this.selectedParticipationOVZ === 'solo'){
+          this.showIndividualUsers()
+        }
+        if (this.selectedParticipationOVZ === 'team') {
+          this.showTeamUsers()
+        }
+      }
     },
     showIndividualUsers() {
       this.isIndividualUsersShown = true
-      this.hideAdditionalFormGroup()
+      this.isTeamUsersShown = false;
+      this.isMentorFormGroupShown = false
     },
     showTeamUsers() {
       this.isTeamUsersShown = true
-      this.hideAdditionalFormGroup();
-    },
-    hideAdditionalFormGroup() {
-      this.isAdditionalFormGroupShown = false
+      this.isIndividualUsersShown = false
+      this.isMentorFormGroupShown = false
     },
     checkInputValues() {
       document.querySelectorAll('input').forEach(input => {
@@ -131,8 +190,8 @@ export const useDataStore = defineStore('data', {
           input.classList.add('error');
           return
         }
-      })
-      console.log('Все поля заполнены');
+        console.log('Все поля заполнены');
+      });
     },
     addTeamUser() {
       if (this.teamUsers.length >= 3) {
@@ -155,10 +214,13 @@ export const useDataStore = defineStore('data', {
       }
     },
     closeForms(){
-      this.isAdditionalFormGroupShown = true
-      this.isIndividualUsersShown = false
-      this.isTeamUsersShown = false
-    }
+      this.isMainFormGroupShown = true;
+    },
+
+    filterMidlTeamOptions(options) {
+      return options.filter(option => option.label !== 'Python')
+        .concat({ id: 12, label: 'Футбол', value: 'Футбол' });
+    },
   },
   getters: {
     filteredUsersOptionValues() {
@@ -180,11 +242,12 @@ export const useDataStore = defineStore('data', {
         case '5-6':
           return this.youngerUsersOptions;
         case '7-9':
-          return this.youngUsersOptions;
+          return this.youngUsersOptions.filter(option => option.label !== 'Олимпиада «Старт в робототехнику»' && option.label !== 'Scratch')
+            .concat({ id: 12, label: 'Футбол', value: 'Футбол' });
         case '10-13':
-          return this.middleUsersOptions;
+          return this.filterMidlTeamOptions(this.middleUsersOptions);
         case '14-17':
-          return this.middleUsersOptions;
+          return this.filterMidlTeamOptions(this.middleUsersOptions);
         default:
           return [];
       }

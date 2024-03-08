@@ -1,5 +1,9 @@
 <script setup>
 
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
+
 const props = defineProps({
   text: {
     type: String,
@@ -13,7 +17,7 @@ const props = defineProps({
   <v-btn
     variant="tonal"
     class=" text-white tracking-widest"
-  >{{ props.text }}</v-btn>
+  >{{ t(props.text) }}</v-btn>
 </template>
 
 <style scoped lang="scss">

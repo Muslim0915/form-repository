@@ -1,7 +1,9 @@
 <script setup>
 
-import {useDataStore} from "@/store";
+
 import {ref} from "vue";
+import {useI18n} from "vue-i18n";
+const { t } = useI18n();
 
 const props = defineProps({
   label: {
@@ -35,7 +37,7 @@ const updateValue = () =>{
 </script>
 
 <template>
-  <label> {{ props.label }}
+  <label> {{ t(props.label) }}
 
   <select
     class="text-black bg-white px-3 py-2
@@ -49,12 +51,12 @@ const updateValue = () =>{
     :disabled="props.disabled"
     v-model="selectedOption"
   >
-    <option disabled :value="''" :selected="!props.modelValue">{{props.label}}</option>
+    <option disabled :value="''" :selected="!props.modelValue">{{t(props.label)}}</option>
     <option
       v-for="item in props.items"
       :key="item.id"
       :value="item.value"
-      >{{item.label}}</option>
+      >{{t(item.label)}}</option>
   </select>
   </label>
 </template>

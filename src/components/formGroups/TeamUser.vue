@@ -36,7 +36,7 @@ const store = useDataStore();
         @update:modelValue="store.chooseAgeCategory($event)"
       />
       <AppSelect
-        label="Выберите категорию"
+        label="Выберите категорию участия"
         :items="store.filteredTeamUsersOptionValue"
         :disabled="store.isOptionDisabled"
         v-model="store.selectedSportOption"
